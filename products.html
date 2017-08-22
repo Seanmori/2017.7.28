@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div id="container">
+		<div class="product">
+			<input type="hidden" class="prod_id" value="1">
+			<img src="1.jpg" class="prod_img">
+			<span class="prod_name">OPPO R11 Plus 6GB+64GB内存版 全网通4G手机 双卡双待</span>
+			<span class="prod_price">999.00</span>
+			<a href="javascript:;">添加到购物车</a>
+		</div>
+		<div class="product">
+			<input type="hidden" class="prod_id" value="2">
+			<img src="2.jpg" class="prod_img">
+			<span class="prod_name">华为P10 手机 草木绿色 全网通(4GB RAM+128GB ROM)</span>
+			<span class="prod_price">3999.00</span>
+			<a href="javascript:;">添加到购物车</a>
+		</div>
+		<a href="cart.html" target="_blank">查看购物车</a>
+	</div>
+	<script type="text/javascript" src="js/tools.js"></script>
+	<script type="text/javascript">
+		var addToCartLinks=$("a",$("#container"));
+		for (var i = 0; i < addToCartLinks.length; i++) {
+			addToCartLinks[i].onclick=function (e) {
+				e=e||event;
+				var _children=this.parentNode.children;
+				var product={
+					id:_children[0].value,
+					img:_children[1].src,
+					name:_children[2].innerHTML,
+					price:_children[3].innerHTML,
+					amount:1
+				}
+				var products=setCookie("products");
+				if (!products) {
+					products=[];
+				} else {
+					products=JSON.stringify(product);
+				}
+				var index=isExist(product.id,products);
+				if (index!=-1) {
+					products[index].amount++;
+				} else {
+					products.push(product);
+				}
+				setCookie("products",JSON.stringify(products),{expires:3});
+				alert("添加成功！");
+			}
+		}
+		function isExist(id,products) {
+			for (var i = 0; i < products.length; i++) {
+				if (products[i].id==id) {
+					return i;
+				}
+			}
+			return -1;
+		}
+	</script>
+</body>
+</html>
